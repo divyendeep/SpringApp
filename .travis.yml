@@ -1,8 +1,3 @@
 language: java
 install: true
 script: mvn clean package
-deploy:
-  provider: heroku
-  api_key: c9cfdfa0-3b7e-47ee-9215-5724280b8e82
-  app: polar-lowlands-35481
-
