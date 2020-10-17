@@ -16,51 +16,74 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
+/**
+ * 
+ * @author iamso
+ */
 @Configuration
 @EnableKafka
 public class KafkaConfig {
+
+  /**
+   * 
+   * @return
+   */
   @Bean
-  KafkaTemplate<String, String> kafkaTemplate(){
-      return new KafkaTemplate<>(producerFactory());
+  KafkaTemplate<String, String> kafkaTemplate() {
+    return new KafkaTemplate<>(producerFactory());
   }
+
+  /**
+   * 
+   * @return
+   */
   @Bean
-  public ProducerFactory<String, String> producerFactory(){
-      Map<String, Object> config = new HashMap<>();
+  public ProducerFactory<String, String> producerFactory() {
+    Map<String, Object> config = new HashMap<>();
 
-      config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-      //config.put(ProducerConfig.ACKS_CONFIG, "all");
-      //config.put(ProducerConfig.RETRIES_CONFIG, 0);
-      //config.put(ProducerConfig.BATCH_SIZE_CONFIG, 1000);
-      //config.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-      config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-      config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    // config.put(ProducerConfig.ACKS_CONFIG, "all");
+    // config.put(ProducerConfig.RETRIES_CONFIG, 0);
+    // config.put(ProducerConfig.BATCH_SIZE_CONFIG, 1000);
+    // config.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+    config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-      return new DefaultKafkaProducerFactory(config);
+    return new DefaultKafkaProducerFactory(config);
   }
-  
+
+  /**
+   * 
+   * @return
+   */
   @Bean
-  public ConsumerFactory<String, String> consumerFactory(){
-      //JsonDeserializer<Container> deserializer = new JsonDeserializer<>(Container.class);
-      //deserializer.setRemoveTypeHeaders(false);
-      //deserializer.addTrustedPackages("*");
-      //deserializer.setUseTypeMapperForKey(true);
+  public ConsumerFactory<String, String> consumerFactory() {
+    // JsonDeserializer<Container> deserializer = new JsonDeserializer<>(Container.class);
+    // deserializer.setRemoveTypeHeaders(false);
+    // deserializer.addTrustedPackages("*");
+    // deserializer.setUseTypeMapperForKey(true);
 
-      Map<String, Object> config = new HashMap<>();
+    Map<String, Object> config = new HashMap<>();
 
-      config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-      //config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_one");
-      //config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-      //config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
-      config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-      config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    // config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_one");
+    // config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+    // config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+    config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+    config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
-      return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),new StringDeserializer());
+    return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), new StringDeserializer());
   }
+
+  /**
+   * 
+   * @return
+   */
   @Bean
-  public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(){
-      ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-      factory.setConsumerFactory(consumerFactory());
-      factory.setBatchListener(true);
-      return factory;
+  public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+    ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    factory.setConsumerFactory(consumerFactory());
+    factory.setBatchListener(true);
+    return factory;
   }
 }

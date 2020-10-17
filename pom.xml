@@ -29,9 +29,6 @@
 		    <version>5.0.0</version>
 		    <scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
-		
-		<!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
 		<dependency>
 		    <groupId>org.springframework.kafka</groupId>
 		    <artifactId>spring-kafka</artifactId>
@@ -41,6 +38,12 @@
 		   <groupId>org.springframework.kafka</groupId>
 		   <artifactId>spring-kafka-test</artifactId>
 		   <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.16</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -61,6 +64,26 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+            	<failsOnError>true</failsOnError>
+                <configLocation>src/main/resources/checkstyle.xml</configLocation>
+                <consoleOutput>true</consoleOutput>
+            </configuration>
+            <executions>
+            	<execution>
+            		<id>validate</id>
+            		<phase>validate</phase>
+            		<goals>
+						<goal>check</goal>
+					</goals>
+            	</execution>
+            </executions>
+            
+        </plugin>
 		</plugins>
 	</build>
 
