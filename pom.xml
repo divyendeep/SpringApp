@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<docker.image.prefix>somesh.io</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -71,6 +72,45 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.version}</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+	         <groupId>com.spotify</groupId>
+	         <artifactId>dockerfile-maven-plugin</artifactId>
+	         <version>1.4.10</version>
+	         
+	         <configuration>
+	            <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+	            <dockerDirectory></dockerDirectory>
+	            <!--  <resources>
+	               <resource>
+	                  <directory>${project.build.directory}</directory>
+	                  <include>${project.build.finalName}.jar</include>
+	               </resource>
+	            </resources> -->
+	         </configuration>
+	      </plugin>
 		</plugins>
 	</build>
 
@@ -91,6 +131,11 @@
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
+			<id>cetral</id>
+			<name>Maven repos</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</pluginRepository>
+		<pluginRepository>
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
 			<url>https://repo.spring.io/milestone</url>
@@ -102,7 +147,7 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-		</pluginRepository>
+		</pluginRepository> 
 	</pluginRepositories>
 
 </project>
